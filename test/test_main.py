@@ -1,24 +1,3 @@
-def test_filter_property():
-  pass
-
-def test_is_equal():
-  pass
-
-def test_is_unequal():
-  pass
-
-def test_has_element():
-  pass
-
-def test_contains():
-  pass
-
-def test_get_property_list():
-  pass
-
-def test_average():
-  pass
-
 def test_filter_by_date():
   pass
 

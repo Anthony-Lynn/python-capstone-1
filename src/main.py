@@ -1,5 +1,5 @@
 from typing import TypedDict
-from src.util import is_equal, is_unequal, contains, average, get_property_list, filter_property
+from src.util import contains, average, get_property_list, filter_property, is_equal, is_unequal
 
 class Submission(TypedDict):
   quiz_name: str
