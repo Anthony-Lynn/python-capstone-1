@@ -62,4 +62,18 @@ def find_unsubmitted(submission_date: str, student_names: list[str], submissions
 def get_average_score(submissions: list[Submission]) -> float:
   scores = get_property_list(submissions, "quiz_score")
 
+  # TODO: precision of 1 decimal place
   return average(scores)
+
+def get_average_score_by_module(submissions: list[Submission]) -> dict[str, float]:
+  module_average_scores: dict[str, float] = {}
+
+  for submission in submissions:
+    module = submission["quiz_module"]
+    score = submission["quiz_score"]
+    if module_average_scores[module]:
+      module_average_scores[module] += score
+    else:
+      module_average_scores[module] = score
+
+  return module_average_scores
