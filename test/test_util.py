@@ -1,5 +1,5 @@
 from typing import Callable
-from src.util import filter, filter_property, is_equal, is_unequal, contains, get_property_list, average
+from src.util import filter, filter_property, is_equal, in_list, get_property_list, average
 from pytest_mock import MockerFixture
 from pytest import raises
 
@@ -45,19 +45,13 @@ def test_is_equal_is_equal():
 def test_is_equal_is_unequal():
   assert not is_equal(1)(2)
 
-def test_is_unequal_is_unequal():
-  assert is_unequal(1)(2)
-
-def test_is_unequal_is_equal():
-  assert not is_unequal(1)(1)
-
-def test_contains_has_element():
+def test_in_list_has_element():
   list_1 = [1, 2, 3]
-  assert contains(list_1)(1)
+  assert in_list(list_1)(1)
 
-def test_contains_missing_element():
+def test_in_list_missing_element():
   list_1 = [1, 2, 3]
-  assert not contains(list_1)(4)
+  assert not in_list(list_1)(4)
 
 def test_get_property_list_gives_property_values():
   list_1 = [{"key_value_1": False}, {"key_value_1": True}]

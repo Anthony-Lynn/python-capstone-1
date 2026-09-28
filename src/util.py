@@ -44,19 +44,14 @@ def is_equal(value: Any) -> Callable[[Any], bool]:
   """
   return lambda compare: compare == value
 
-def is_unequal(value: Any) -> Callable[[Any], bool]:
-  """
-  Get a function that checks if a argument is unequal to the value.
+def has_element[T](elements: list[T], has_item: T) -> bool: 
+  for element in elements:
+    if element == has_item:
+      return True
 
-  Args:
-    value (Any): The first value to compare to.
+  return False
 
-  Returns:
-    Callable[[Any], bool]: A function that returns whether the argument passed is unequal to the value.
-  """
-  return lambda compare: compare != value
-
-def contains[T](elements: list[T]) -> Callable[[T], bool]:
+def in_list[T](elements: list[T]) -> Callable[[T], bool]:
   """
   Get a function that checks if a argument is within the list.
 
@@ -66,14 +61,10 @@ def contains[T](elements: list[T]) -> Callable[[T], bool]:
   Returns:
     Callable[[Any], bool]: A function that returns whether the argument passed is within the list.
   """
-  def has_element(has_item: T) -> bool: 
-    for element in elements:
-      if element == has_item:
-        return True
+  return lambda element: has_element(elements, element)
 
-    return False
-
-  return has_element
+def is_not[T](func: Callable[[T], bool]) -> Callable[[T], bool]:
+  return lambda value: not func(value)
 
 # Would love to get rid of the Any types here, but not sure how...
 def get_property_list[T: Mapping[str, Any]](elements: list[T], property: str) -> list[Any]:
