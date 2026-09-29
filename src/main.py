@@ -72,6 +72,15 @@ def get_average_score(submissions: list[Submission]) -> float:
   return round(average_score, 1)
 
 def get_module_scores(submissions: list[Submission]) -> dict[str, list[float]]:
+  """
+  Gets a lists of scores categorized by module in submissions.
+
+  Args:
+    submissions (list[Submission]): A list of submissions.
+
+  Returns:
+    dict[str, list[float]]: A dictionary of lists of submission scores.
+  """
   module_scores: dict[str, list[float]] = {}
 
   for submission in submissions:
@@ -84,6 +93,15 @@ def get_module_scores(submissions: list[Submission]) -> dict[str, list[float]]:
   return module_scores
 
 def get_average_of_scores(scores_dict: dict[str, list[float]]) -> dict[str, float]:
+  """
+  Get average score of scores.
+
+  Args:
+    scores_dict (dict[str, list[float]]): A dictionary of score lists to find the average of.
+
+  Returns:
+    dict[str, float]: A new dictionary with the average of their score lists.
+  """
   average_scores: dict[str, float] = {}
 
   for key, scores in scores_dict.items():
