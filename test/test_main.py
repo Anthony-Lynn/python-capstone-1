@@ -127,8 +127,8 @@ def test_find_unsubmitted_find_unsubmitted():
 def test_find_unsubmitted_no_names():
   assert find_unsubmitted("07/27/2014", [], submissions) == []
 
-def test_find_unsubmitted_missing_date():
-  assert find_unsubmitted("07/27/2025", ["Ada", "Alaiya", "Carol"], submissions) == ["Ada", "Alaiya", "Carol"]
+def test_find_unsubmitted_no_submissions():
+  assert find_unsubmitted("07/27/2025", ["Ada", "Alaiya", "Carol"], submissions) == []
 
 def test_find_unsubmitted_missing_students():
   assert find_unsubmitted("07/27/2014", ["Mills", "Mike", "Mavrick"], submissions) == ["Mills", "Mike", "Mavrick"]

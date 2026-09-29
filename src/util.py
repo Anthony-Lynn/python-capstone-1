@@ -44,26 +44,45 @@ def is_equal(value: Any) -> Callable[[Any], bool]:
   """
   return lambda compare: compare == value
 
-def has_element[T](elements: list[T], has_item: T) -> bool: 
+def has_element[T](elements: list[T], item: T) -> bool:
+  """
+  Check if a argument is within the list.
+
+  Args:
+    elements (list[T]): The list to check if the argument is within.
+    item (T): The item to check for.
+
+  Returns:
+    bool: Whether or not the element is within the list
+  """
   for element in elements:
-    if element == has_item:
+    if element == item:
       return True
 
   return False
 
 def in_list[T](elements: list[T]) -> Callable[[T], bool]:
   """
-  Get a function that checks if a argument is within the list.
+  Get a function that checks if an argument is within the list.
 
   Args:
-    elements (Any): The list to check if the argument is within.
+    elements (list[T]): The list to check if the argument is within.
 
   Returns:
-    Callable[[Any], bool]: A function that returns whether the argument passed is within the list.
+    Callable[[T], bool]: A function that returns whether the argument passed is in the list.
   """
   return lambda element: has_element(elements, element)
 
 def is_not[T](func: Callable[[T], bool]) -> Callable[[T], bool]:
+  """
+  Get a function that returns the not value of the function given.
+
+  Args:
+    func (Callable[[T], bool]): The function to apply the not to
+
+  Returns:
+    Callable[[T], bool]: The function that's identical to the one passed in but has its boolean return value flipped
+  """
   return lambda value: not func(value)
 
 # Would love to get rid of the Any types here, but not sure how...

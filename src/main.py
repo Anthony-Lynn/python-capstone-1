@@ -48,6 +48,10 @@ def find_unsubmitted(submission_date: str, student_names: list[str], submissions
   """
   submissions_on_date = filter_property(submissions, "submission_date", is_equal(submission_date))
   submitted_students: list[str] = get_property_list(submissions_on_date, "student_name")
+
+  if len(submitted_students) == 0:
+    return []
+
   unsubmitted_names = filter(student_names, is_not(in_list(submitted_students)))
   
   return unsubmitted_names
@@ -67,6 +71,26 @@ def get_average_score(submissions: list[Submission]) -> float:
 
   return round(average_score, 1)
 
+def get_module_scores(submissions: list[Submission]) -> dict[str, list[float]]:
+  module_scores: dict[str, list[float]] = {}
+
+  for submission in submissions:
+    module = submission["quiz_module"]
+    if not module_scores[module]:
+      module_scores[module] = []
+    
+    module_scores[module].append(submission["quiz_score"])
+
+  return module_scores
+
+def get_average_of_scores(scores_dict: dict[str, list[float]]) -> dict[str, float]:
+  average_scores: dict[str, float] = {}
+
+  for key, scores in scores_dict.items():
+    average_scores[key] = average(scores)
+
+  return average_scores
+
 def get_average_score_by_module(submissions: list[Submission]) -> dict[str, float]:
   """
   Get average score of submissions categorized by module.
@@ -77,18 +101,7 @@ def get_average_score_by_module(submissions: list[Submission]) -> dict[str, floa
   Returns:
     dict[str, float]: The modules and their average scores
   """
-  # Categorize the modules scores into their own lists
-  module_scores: dict[str, list[float]] = {}
-  for submission in submissions:
-    module = submission["quiz_module"]
-    if not module_scores[module]:
-      module_scores[module] = []
-    
-    module_scores[module].append(submission["quiz_score"])
-
-  # Find the average of the lists
-  module_average_scores: dict[str, float] = {}
-  for module, scores in module_scores.items():
-    module_average_scores[module] = average(scores)
+  module_scores = get_module_scores(submissions)
+  average_scores = get_average_of_scores(module_scores)
   
-  return module_average_scores
+  return average_scores
