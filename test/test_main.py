@@ -1,4 +1,5 @@
-from src.main import Submission, filter_by_date, filter_by_student_id, find_unsubmitted, get_average_score, get_average_score_by_module
+from src.main import Submission, filter_by_date, filter_by_student_id, find_unsubmitted, get_average_score, get_average_score_by_module, get_module_scores, get_average_of_scores
+from pytest_mock import MockerFixture
 
 submission_1: Submission = {
   "quiz_module": "Statistics",
@@ -103,6 +104,7 @@ submissions: list[Submission] = [
   submission_10
 ]
 
+# filter_by_date
 def test_filter_by_date_found_date():
   assert filter_by_date("07/27/2014", submissions) == [submission_4, submission_5, submission_6]
 
@@ -112,6 +114,7 @@ def test_filter_by_date_missing_date():
 def test_filter_by_date_no_submissions():
   assert filter_by_date("07/27/2014", []) == []
 
+# filter_by_student_id
 def test_filter_by_student_id_found_id():
   assert filter_by_student_id(18650400, submissions) == [submission_1, submission_2, submission_3]
 
@@ -121,6 +124,7 @@ def test_filter_by_student_id_missing_id():
 def test_filter_by_student_id_no_submissions():
   assert filter_by_student_id(18650400, []) == []
 
+# find_unsubmitted
 def test_find_unsubmitted_find_unsubmitted():
   assert find_unsubmitted("07/27/2014", ["Ada", "Alaiya", "Carol"], submissions) == ["Carol"]
 
@@ -133,8 +137,39 @@ def test_find_unsubmitted_no_submissions():
 def test_find_unsubmitted_missing_students():
   assert find_unsubmitted("07/27/2014", ["Mills", "Mike", "Mavrick"], submissions) == ["Mills", "Mike", "Mavrick"]
 
-def test_get_average_score():
-  pass
+# get_average_score
+def test_get_average_score_get_average():
+  assert get_average_score(submissions) == 38.1
 
-def test_get_average_score_by_module():
-  pass
+def test_get_average_score_no_submissions():
+  assert get_average_score([]) == 0
+
+# get_module_scores
+def test_get_module_scores_get_scores():
+  assert get_module_scores(submissions) == {"Algebra": [6.8, 31.6, 6.8, 55.7], "History": [10.4, 78.7, 0], "Statistics": [40.6, 50.8, 100]}
+
+def test_get_module_scores_no_submissions():
+  assert get_module_scores([]) == {}
+
+# get_average_of_scores
+def test_get_average_of_scores_get_average(mocker: MockerFixture):
+  mock_average = mocker.patch("src.util.average")
+  mock_average.return_value = 30
+
+  assert get_average_of_scores({"Statistics": [10.0, 20.0, 30.0, 40.0, 50.0]}) == {"Statistics": 30}
+
+def test_get_average_of_scores_empty_dict():
+  assert get_average_of_scores({}) == {}
+
+def test_get_average_of_scores_empty_list(mocker: MockerFixture):
+  mock_average = mocker.patch("src.util.average")
+  mock_average.return_value = 0
+  
+  assert get_average_of_scores({"Statistics": []}) == {"Statistics": 0}
+
+# get_average_score_by_module
+def test_get_average_score_by_module_of_submissions():
+  assert get_average_score_by_module(submissions) == {"Statistics": 63.8, "Algebra": 25.2, "History": 29.7}
+
+def test_get_average_score_by_module_no_submissions():
+  assert get_average_score_by_module([]) == {}

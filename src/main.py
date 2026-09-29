@@ -33,7 +33,6 @@ def filter_by_student_id(student_id: int, submissions: list[Submission]) -> list
   """
   return filter_property(submissions, "student_id", is_equal(student_id))
 
-# TODO: Check the names list is what's being modified, names may not be in submissions.
 def find_unsubmitted(submission_date: str, student_names: list[str], submissions: list[Submission]) -> list[str]:
   """
   Get a list of student names who match the passed student names and haven't had a submission on the date.
@@ -67,9 +66,8 @@ def get_average_score(submissions: list[Submission]) -> float:
     float: An average score of the submissions.
   """
   scores = get_property_list(submissions, "quiz_score")
-  average_score = average(scores)
 
-  return round(average_score, 1)
+  return round(average(scores), 1)
 
 def get_module_scores(submissions: list[Submission]) -> dict[str, list[float]]:
   """
@@ -85,7 +83,7 @@ def get_module_scores(submissions: list[Submission]) -> dict[str, list[float]]:
 
   for submission in submissions:
     module = submission["quiz_module"]
-    if not module_scores[module]:
+    if not module in module_scores:
       module_scores[module] = []
     
     module_scores[module].append(submission["quiz_score"])
@@ -105,7 +103,7 @@ def get_average_of_scores(scores_dict: dict[str, list[float]]) -> dict[str, floa
   average_scores: dict[str, float] = {}
 
   for key, scores in scores_dict.items():
-    average_scores[key] = average(scores)
+    average_scores[key] = round(average(scores), 1)
 
   return average_scores
 
